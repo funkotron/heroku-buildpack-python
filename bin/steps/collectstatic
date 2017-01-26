@@ -32,6 +32,8 @@ if [ ! "$DISABLE_COLLECTSTATIC" ] && [ -f "$MANAGE_FILE" ] && [ "$DJANGO_INSTALL
     # Run collectstatic, cleanup some of the noisy output.
     python $MANAGE_FILE collectstatic --noinput --traceback 2>&1 | sed '/^Post-processed/d;/^Copying/d;/^$/d' | indent
     COLLECTSTATIC_STATUS="${PIPESTATUS[0]}"
+    
+    python $MANAGE_FILE compress --engine jinja2
 
     set -e
 
