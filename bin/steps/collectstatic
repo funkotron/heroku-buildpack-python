@@ -26,14 +26,14 @@ bpwatch start collectstatic  # metrics collection
 
 if [ ! "$DISABLE_COLLECTSTATIC" ] && [ -f "$MANAGE_FILE" ] && [ "$DJANGO_INSTALLED" ]; then
     set +e
-
+    gem install sass
     puts-cmd "python $MANAGE_FILE collectstatic --noinput"
-
+    
     # Run collectstatic, cleanup some of the noisy output.
     python $MANAGE_FILE collectstatic --noinput --traceback 2>&1 | sed '/^Post-processed/d;/^Copying/d;/^$/d' | indent
     COLLECTSTATIC_STATUS="${PIPESTATUS[0]}"
     
-    gem install sass
+    
     python $MANAGE_FILE compress --engine jinja2
 
     set -e
